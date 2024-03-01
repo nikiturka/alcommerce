@@ -20,17 +20,12 @@ class User(Base):
     surname: Mapped[str]
     phone_number: Mapped[str]
 
-    carts = relationship("Cart", back_populates="user")
-    orders = relationship("Order", back_populates="user")
-
 
 class Category(Base):
     __tablename__ = 'categories'
 
     id: Mapped[intpk]
     name: Mapped[str]
-
-    fruits = relationship("Fruit", back_populates="category")
 
 
 class Fruit(Base):
@@ -44,9 +39,6 @@ class Fruit(Base):
     rating: Mapped[float] = mapped_column(nullable=True)
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id", ondelete='CASCADE'))
 
-    category = relationship("Category", back_populates="fruits")
-    reviews = relationship("Review", back_populates="fruit")
-
 
 class Order(Base):
     __tablename__ = 'orders'
@@ -55,9 +47,6 @@ class Order(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete='CASCADE'))
     total_price: Mapped[float]
     is_active: Mapped[bool] = mapped_column(default=True)
-
-    user = relationship("User", back_populates="orders")
-    order_products = relationship("OrderProduct", back_populates="order")
 
 
 class OrderProduct(Base):
@@ -69,9 +58,6 @@ class OrderProduct(Base):
     quantity: Mapped[int]
     total_price: Mapped[float]
 
-    order = relationship("Order", back_populates="order_products")
-    product = relationship("Fruit", back_populates="order_products")
-
 
 class Cart(Base):
     __tablename__ = 'carts'
@@ -81,9 +67,6 @@ class Cart(Base):
     order_id: Mapped[int] = mapped_column(ForeignKey("orders.id", ondelete="CASCADE"), nullable=True)
     session_key: Mapped[str]
     is_active: Mapped[bool] = mapped_column(default=True)
-
-    user = relationship("User", back_populates="carts")
-    cart_products = relationship("CartProduct", back_populates="cart")
 
 
 class CartProduct(Base):
@@ -95,9 +78,6 @@ class CartProduct(Base):
     quantity: Mapped[int]
     total_price: Mapped[float]
 
-    cart = relationship("Cart", back_populates="cart_products")
-    product = relationship("Fruit", back_populates="cart_products")
-
 
 class Review(Base):
     __tablename__ = "reviews"
@@ -107,6 +87,3 @@ class Review(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete='CASCADE'))
     fruit_id: Mapped[int] = mapped_column(ForeignKey("fruits.id", ondelete="CASCADE"))
     created_at: Mapped[created_at]
-
-    user = relationship("User", back_populates="reviews")
-    fruit = relationship("Fruit", back_populates="reviews")
