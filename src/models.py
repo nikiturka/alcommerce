@@ -18,7 +18,6 @@ class User(Base):
     id: Mapped[intpk]
     name: Mapped[str]
     surname: Mapped[str]
-    phone_number: Mapped[str]
 
 
 class Category(Base):

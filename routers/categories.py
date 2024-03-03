@@ -6,10 +6,10 @@ from src.database import async_session_factory
 from src.models import *
 from src.schema import CategorySchema
 
-fruits_router = APIRouter(tags=["Categories"], prefix='/categories')
+categories_router = APIRouter(tags=["Categories"], prefix='/categories')
 
 
-@fruits_router.get("/")
+@categories_router.get("/")
 async def get_categories():
     try:
         async with async_session_factory() as session:
@@ -22,7 +22,7 @@ async def get_categories():
         return {"error": str(e)}
 
 
-@fruits_router.post("/")
+@categories_router.post("/")
 async def create_category(new_category: CategorySchema):
     try:
         async with async_session_factory() as session:
@@ -35,7 +35,7 @@ async def create_category(new_category: CategorySchema):
         return {"error": str(e)}
 
 
-@fruits_router.get("/{category_id}")
+@categories_router.get("/{category_id}")
 async def get_category(category_id: int):
     try:
         async with async_session_factory() as session:
@@ -48,7 +48,7 @@ async def get_category(category_id: int):
         return {"error": str(e)}
 
 
-@fruits_router.put("/{category_id}")
+@categories_router.put("/{category_id}")
 async def update_category(category_id: int, fields_to_update: CategorySchema):
     try:
         async with async_session_factory() as session:
@@ -61,7 +61,7 @@ async def update_category(category_id: int, fields_to_update: CategorySchema):
         return {"error": str(e)}
 
 
-@fruits_router.delete("/{category_id}")
+@categories_router.delete("/{category_id}")
 async def delete_category(category_id: int):
     try:
         async with async_session_factory() as session:
