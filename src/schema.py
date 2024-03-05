@@ -18,3 +18,15 @@ class FruitSchema(BaseModel):
     rating: float = None
     category_id: int
 
+
+class OrderSchema(BaseModel):
+    user_id: int
+    total_price: float
+    is_active: bool = True
+
+
+class OrderProductSchema(BaseModel):
+    order_id: int
+    product_id: int
+    quantity: int
+    total_price: float

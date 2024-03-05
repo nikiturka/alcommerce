@@ -49,6 +49,8 @@ class Order(Base):
     total_price: Mapped[float]
     is_active: Mapped[bool] = mapped_column(default=True)
 
+    user: Mapped["User"] = relationship()
+
 
 class OrderProduct(Base):
     __tablename__ = 'order_products'
