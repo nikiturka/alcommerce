@@ -1,30 +1,32 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy import select, insert, delete, update
+from sqlalchemy.orm import selectinload
+
 from src.database import async_session_factory
 from src.models import *
-from src.schema import UserSchema
+from src.schema import FruitSchema
 
-users_router = APIRouter(tags=["Users"], prefix='/users')
+fruits_router = APIRouter(tags=["Fruits"], prefix='/fruits')
 
 
-@users_router.get("/")
-async def get_users():
+@fruits_router.get("/")
+async def get_fruits():
     try:
         async with async_session_factory() as session:
-            query = select(User)
+            query = select(Fruit).options(selectinload(Fruit.category))
             data = await session.execute(query)
             data_converted = data.scalars().all()
 
-        return {"users": data_converted}
+        return {"fruits": data_converted}
     except Exception as e:
         return {"error": str(e)}
 
 
-@users_router.post("/")
-async def create_user(new_user: Annotated[UserSchema, Depends()]):
+@fruits_router.post("/")
+async def create_fruit(new_fruit: FruitSchema):
     try:
         async with async_session_factory() as session:
-            query = insert(User).values(**new_user.dict())
+            query = insert(Fruit).values(**new_fruit.dict())
             await session.execute(query)
             await session.commit()
 
@@ -33,11 +35,11 @@ async def create_user(new_user: Annotated[UserSchema, Depends()]):
         return {"error": str(e)}
 
 
-@users_router.get("/{user_id}")
-async def get_user(user_id: int):
+@fruits_router.get("/{fruit_id}")
+async def get_fruit(fruit_id: int):
     try:
         async with async_session_factory() as session:
-            query = select(User).where(User.id == user_id)
+            query = select(Fruit).where(Fruit.id == fruit_id).options(selectinload(Fruit.category))
             data = await session.execute(query)
             data_converted = data.scalars().all()
 
@@ -46,11 +48,11 @@ async def get_user(user_id: int):
         return {"error": str(e)}
 
 
-@users_router.put("/{user_id}")
-async def update_user(user_id: int, fields_to_update: Annotated[UserSchema, Depends()]):
+@fruits_router.put("/{fruit_id}")
+async def update_fruit(fruit_id: int, fields_to_update: Annotated[FruitSchema, Depends()]):
     try:
         async with async_session_factory() as session:
-            stmt = update(User).where(User.id == user_id).values(**fields_to_update.dict())
+            stmt = update(Fruit).where(Fruit.id == fruit_id).values(**fields_to_update.dict())
             await session.execute(stmt)
             await session.commit()
 
@@ -60,11 +62,11 @@ async def update_user(user_id: int, fields_to_update: Annotated[UserSchema, Depe
         return {"error": str(e)}
 
 
-@users_router.delete("/{user_id}")
-async def delete_user(user_id: int):
+@fruits_router.delete("/{fruit_id}")
+async def delete_fruit(fruit_id: int):
     try:
         async with async_session_factory() as session:
-            query = delete(User).where(User.id == user_id)
+            query = delete(Fruit).where(Fruit.id == fruit_id)
             await session.execute(query)
             await session.commit()
 

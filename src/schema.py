@@ -10,6 +10,11 @@ class UserSchema(BaseModel):
     surname: str
 
 
-class UserOptionalSchema(UserSchema):
-    name: str | None = None
-    surname: str | None = None
+class FruitSchema(BaseModel):
+    name: str
+    description: str
+    price_for_kg: float
+    total_quantity: int
+    rating: float = None
+    category_id: int
+

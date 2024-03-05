@@ -33,10 +33,12 @@ class Fruit(Base):
     id: Mapped[intpk]
     name: Mapped[str]
     description: Mapped[str]
-    price_for_kg: Mapped[str]
+    price_for_kg: Mapped[float]
     total_quantity: Mapped[int]
     rating: Mapped[float] = mapped_column(nullable=True)
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id", ondelete='CASCADE'))
+
+    category: Mapped["Category"] = relationship()
 
 
 class Order(Base):
