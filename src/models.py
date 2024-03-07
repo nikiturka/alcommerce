@@ -46,7 +46,7 @@ class Order(Base):
 
     id: Mapped[intpk]
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete='CASCADE'))
-    total_price: Mapped[float]
+    total_price: Mapped[float] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(default=True)
 
     user: Mapped["User"] = relationship()
