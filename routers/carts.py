@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy import select, insert, delete, update
-from sqlalchemy.orm import selectinload
 
 from src.database import async_session_factory
 from src.models import *
-from src.schema import OrderSchema, CartSchema
+from src.schema import CartSchema
 
 carts_router = APIRouter(tags=["Carts"], prefix='/carts')
 
