@@ -5,6 +5,7 @@ from routers.users import users_router
 from routers.fruits import fruits_router
 from routers.orders import orders_router
 from routers.order_products import order_products_router
+from routers.carts import carts_router
 
 
 app = FastAPI()
@@ -14,6 +15,7 @@ app.include_router(users_router)
 app.include_router(fruits_router)
 app.include_router(orders_router)
 app.include_router(order_products_router)
+app.include_router(carts_router)
 
 
 @app.on_event("startup")

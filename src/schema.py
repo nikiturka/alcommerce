@@ -28,3 +28,10 @@ class OrderProductSchema(BaseModel):
     order_id: int
     product_id: int
     quantity: int
+
+
+class CartSchema(BaseModel):
+    order_id: int
+    user_id: int
+    is_active: bool = True
+    session_key: str
