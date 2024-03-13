@@ -31,7 +31,12 @@ class OrderProductSchema(BaseModel):
 
 
 class CartSchema(BaseModel):
-    order_id: int
     user_id: int
     is_active: bool = True
     session_key: str
+
+
+class CartProductSchema(BaseModel):
+    cart_id: int
+    product_id: int
+    quantity: int

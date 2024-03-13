@@ -25,7 +25,6 @@ async def get_order_products():
 @order_products_router.post("/")
 async def create_order_product(data: Annotated[OrderProductSchema, Depends()]):
     try:
-        await OrderService.update_or_create_order_product(data)
         await OrderService.count_order_total_price(data.order_id)
         await OrderService.remove_fruit_from_stock(data.product_id, data.quantity)
         return {"status": "200"}
