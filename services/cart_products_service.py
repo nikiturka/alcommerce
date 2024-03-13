@@ -6,6 +6,16 @@ from src.models import Fruit, CartProduct
 
 class CartProductsService:
     @staticmethod
+    async def check_product_in_stock(quantity, product_id):
+        async with async_session_factory() as session:
+            fruit = await session.execute(select(Fruit).where(Fruit.id == product_id))
+
+            if quantity > fruit.scalar().total_quantity:
+                raise Exception("Error: Out of stock")
+
+        return
+    
+    @staticmethod
     async def count_cart_product_total_price(product_id, quantity):
         async with async_session_factory() as session:
             query = select(Fruit).where(Fruit.id == product_id)

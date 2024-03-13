@@ -24,6 +24,7 @@ async def get_cart_products():
 @cart_products_router.post("/")
 async def create_cart_product(data: CartProductSchema):
     try:
+        await CartProductsService.check_product_in_stock(data.quantity, data.product_id)
         await CartProductsService.count_cart_product_total_price(data.product_id, data.quantity)
         await CartProductsService.update_or_create_cart_product(data)
         return {"status": "200"}
