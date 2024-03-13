@@ -22,16 +22,6 @@ async def get_order_products():
         return {"error": str(e)}
 
 
-@order_products_router.post("/")
-async def create_order_product(data: Annotated[OrderProductSchema, Depends()]):
-    try:
-        await OrderService.count_order_total_price(data.order_id)
-        await OrderService.remove_fruit_from_stock(data.product_id, data.quantity)
-        return {"status": "200"}
-    except Exception as e:
-        return {"error": str(e)}
-
-
 @order_products_router.get("/{order_product_id}")
 async def get_order_product(order_product_id: int):
     try:
@@ -41,32 +31,5 @@ async def get_order_product(order_product_id: int):
             data_converted = data.scalars().all()
 
         return {"order_product": data_converted}
-    except Exception as e:
-        return {"error": str(e)}
-
-
-@order_products_router.put("/{order_product_id}")
-async def update_order_product(order_product_id: int, fields_to_update: Annotated[OrderProductSchema, Depends()]):
-    try:
-        async with async_session_factory() as session:
-            stmt = update(OrderProduct).where(OrderProduct.id == order_product_id).values(**fields_to_update.dict())
-            await session.execute(stmt)
-            await session.commit()
-
-        return {"status": "200"}
-
-    except Exception as e:
-        return {"error": str(e)}
-
-
-@order_products_router.delete("/{order_product_id}")
-async def delete_order_product(order_product_id: int):
-    try:
-        async with async_session_factory() as session:
-            query = delete(OrderProduct).where(OrderProduct.id == order_product_id)
-            await session.execute(query)
-            await session.commit()
-
-        return {"status": "200"}
     except Exception as e:
         return {"error": str(e)}

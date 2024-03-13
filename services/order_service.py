@@ -13,7 +13,6 @@ class OrderService:
             total_price = 0
 
             for order_product in order_products.scalars().all():
-                print(order_product.total_price)
                 total_price += order_product.total_price
 
             query = update(Order).where(Order.id == order_id).values(total_price=total_price)
