@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select, insert, delete, update
+from sqlalchemy import select, insert, delete, update, and_
 from sqlalchemy.orm import selectinload
 
+from services.order_service import OrderService
 from src.database import async_session_factory
 from src.models import *
 from src.schema import OrderSchema
@@ -29,6 +30,12 @@ async def create_order(new_order: OrderSchema):
             query = insert(Order).values(**new_order.dict())
             await session.execute(query)
             await session.commit()
+
+            order_query = await session.execute(select(Order).where(Order.user_id == new_order.user_id))
+            order = order_query.scalar()
+
+            await OrderService.create_order_products(new_order)
+            await OrderService.count_order_total_price(order.id)
 
         return {"status": "200"}
     except Exception as e:
