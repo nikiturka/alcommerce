@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -40,3 +41,10 @@ class CartProductSchema(BaseModel):
     cart_id: int
     product_id: int
     quantity: int
+
+
+class ReviewSchema(BaseModel):
+    rating: float
+    user_id: int
+    fruit_id: int
+    created_at: datetime
