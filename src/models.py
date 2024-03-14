@@ -90,3 +90,19 @@ class Review(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete='CASCADE'))
     fruit_id: Mapped[int] = mapped_column(ForeignKey("fruits.id", ondelete="CASCADE"))
     created_at: Mapped[created_at]
+
+
+class ReviewLike(Base):
+    __tablename__ = "review_likes"
+
+    id: Mapped[intpk]
+    review_id: Mapped[int] = mapped_column(ForeignKey("reviews.id", ondelete='CASCADE'))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete='CASCADE'))
+
+
+class ReviewDislike(Base):
+    __tablename__ = "review_dislikes"
+
+    id: Mapped[intpk]
+    review_id: Mapped[int] = mapped_column(ForeignKey("reviews.id", ondelete='CASCADE'))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete='CASCADE'))
